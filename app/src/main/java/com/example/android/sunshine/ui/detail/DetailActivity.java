@@ -51,10 +51,18 @@ public class DetailActivity extends AppCompatActivity { // Need not to change to
         super.onCreate(savedInstanceState);
 
         mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
-        mDetailActivityViewModel = ViewModelProviders.of(this).get(DetailActivityViewModel.class);
 
         long timestamp = getIntent().getLongExtra(WEATHER_ID_EXTRA, -1);
         Date date = new Date(timestamp);
+
+        // Create the relationship with view model
+        mDetailActivityViewModel = ViewModelProviders.of(this).get(DetailActivityViewModel.class);
+
+        // If the weather forecast details change, update the UI
+        // Add observation: whenever postValue() is called, it runs the block
+        mDetailActivityViewModel.getWeather().observe(this, weatherEntry -> {
+            if (weatherEntry != null) bindWeatherToUI(weatherEntry);
+        });
 
     }
 
