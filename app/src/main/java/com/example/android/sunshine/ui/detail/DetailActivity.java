@@ -15,6 +15,8 @@
  */
 package com.example.android.sunshine.ui.detail;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +32,7 @@ import java.util.Date;
 /**
  * Displays single day's forecast
  */
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity { // Need not to change to LifecycleActivity(deprecated) anymore
 
     public static final String WEATHER_ID_EXTRA = "WEATHER_ID_EXTRA";
 
@@ -42,12 +44,15 @@ public class DetailActivity extends AppCompatActivity {
      * programmatically without cluttering up the code with findViewById.
      */
     private ActivityDetailBinding mDetailBinding;
+    private DetailActivityViewModel mDetailActivityViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_detail);
+        mDetailActivityViewModel = ViewModelProviders.of(this).get(DetailActivityViewModel.class);
+
         long timestamp = getIntent().getLongExtra(WEATHER_ID_EXTRA, -1);
         Date date = new Date(timestamp);
 
